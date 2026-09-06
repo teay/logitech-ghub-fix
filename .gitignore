@@ -1,0 +1,17 @@
+# Windows
+thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msm
+*.msp
+*.lnk
+
+# PowerShell
+*.log
+
+# VS Code / IDEs
+.vscode/
+.idea/
