@@ -55,6 +55,22 @@ irm https://raw.githubusercontent.com/teay/logitech-ghub-fix/main/Fix-LGHUB.ps1 
 
 ---
 
+## 🧪 Automated Testing / การรันชุดทดสอบ
+
+You can verify that all 5 repair conditions are satisfied by running the test suite:
+
+**On WSL Ubuntu:**
+```bash
+./test.sh
+```
+
+**On Windows PowerShell:**
+```powershell
+.\Test-FixLGHUB.ps1
+```
+
+---
+
 ## ⚙️ What the Fix Script Does / สคริปต์แก้ไขอะไรบ้าง
 
 | Step | Action | Description |
@@ -63,7 +79,8 @@ irm https://raw.githubusercontent.com/teay/logitech-ghub-fix/main/Fix-LGHUB.ps1 
 | 2 | **Clear AppCompatFlags** | Removes `RUNASADMIN` registry keys from `HKCU` and `HKLM` |
 | 3 | **Enable Service** | Configures `LGHUBUpdaterService` startup type to `Automatic` and starts it |
 | 4 | **Reset Permissions** | Grants `FullControl` to current user on `%AppData%\LGHUB` and `%LocalAppData%\LGHUB` |
-| 5 | **Relaunch G HUB** | Starts `lghub.exe` in normal user security context |
+| 5 | **Ensure Shortcut** | Creates `Fix-Logitech-GHUB.bat` on Windows Desktop if missing |
+| 6 | **Relaunch G HUB** | Starts `lghub.exe` in normal user security context |
 
 ---
 
@@ -72,8 +89,10 @@ irm https://raw.githubusercontent.com/teay/logitech-ghub-fix/main/Fix-LGHUB.ps1 
 ```
 logitech-ghub-fix/
 ├── Fix-LGHUB.ps1    # Portable PowerShell fix engine
+├── Test-FixLGHUB.ps1# Automated verification test suite
 ├── Run-Fix.bat      # Windows batch launcher (relative paths)
 ├── fix-ghub.sh      # WSL Ubuntu portable launcher (dynamic wslpath)
+├── test.sh          # WSL test runner
 ├── install.sh       # WSL setup script (~/bin/fix-ghub)
 ├── README.md        # Documentation (English & Thai)
 ├── LICENSE          # MIT License
