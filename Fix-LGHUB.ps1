@@ -3,8 +3,7 @@
     Fixes Logitech G HUB "Run as Administrator" elevation requirements and infinite startup loading issues.
 
 .DESCRIPTION
-    Logitech G HUB often gets stuck on startup or fails to open unless launched as Administrator.
-    This script automates the full repair procedure:
+    Fully portable PowerShell repair script for Logitech G HUB:
     1. Terminates stuck LG HUB background processes.
     2. Clears 'RunAsAdmin' compatibility flags from Windows Registry (HKCU & HKLM).
     3. Configures LGHUBUpdaterService to Automatic startup and starts the service.
@@ -13,9 +12,6 @@
 
 .EXAMPLE
     .\Fix-LGHUB.ps1
-
-.LINK
-    https://github.com/your-username/logitech-ghub-fix
 #>
 
 [CmdletBinding()]
@@ -45,7 +41,19 @@ function Write-Warn {
     Write-Host "  [!] $Message" -ForegroundColor DarkYellow
 }
 
-Write-Header "Logitech G HUB Auto-Fix Script"
+Write-Header "Logitech G HUB Auto-Fix Script (Portable)"
+
+# Determine G HUB Installation Path Dynamically
+$programFiles = $env:ProgramFiles
+if (-not $programFiles) { $programFiles = "C:\Program Files" }
+
+$lghubDir = Join-Path $programFiles "LGHUB"
+$lghubExecutables = @(
+    Join-Path $lghubDir "lghub.exe",
+    Join-Path $lghubDir "lghub_agent.exe",
+    Join-Path $lghubDir "lghub_updater.exe",
+    Join-Path $lghubDir "lghub_system_tray.exe"
+)
 
 # 1. Terminate LG HUB Processes
 Write-Step "1/5" "Terminating running Logitech G HUB processes..."
@@ -64,13 +72,6 @@ Write-Step "2/5" "Cleaning 'RunAsAdmin' registry compatibility flags..."
 $regPaths = @(
     "HKCU:\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers",
     "HKLM:\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers"
-)
-
-$lghubExecutables = @(
-    "C:\Program Files\LGHUB\lghub.exe",
-    "C:\Program Files\LGHUB\lghub_agent.exe",
-    "C:\Program Files\LGHUB\lghub_updater.exe",
-    "C:\Program Files\LGHUB\lghub_system_tray.exe"
 )
 
 $flagsRemoved = 0
@@ -126,12 +127,12 @@ foreach ($path in $appDataPaths) {
 
 # 5. Relaunch LG HUB
 Write-Step "5/5" "Launching Logitech G HUB in standard user mode..."
-$lghubPath = "C:\Program Files\LGHUB\lghub.exe"
+$lghubPath = Join-Path $lghubDir "lghub.exe"
 if (Test-Path $lghubPath) {
     Start-Process -FilePath $lghubPath
     Write-Success "Logitech G HUB launched successfully!"
 } else {
-    Write-Warn "Executable not found at default location: $lghubPath"
+    Write-Warn "Executable not found at location: $lghubPath"
 }
 
 Write-Header "Fix Complete! Check if G HUB opens normally."

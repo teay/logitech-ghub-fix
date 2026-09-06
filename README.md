@@ -18,23 +18,40 @@ Logitech G HUB frequently encounters issues where:
 
 ---
 
-## 🚀 Quick Start / วิธีใช้งาน
+## 🚀 Usage Options / วิธีใช้งาน
 
-### Option 1: One-Liner (PowerShell as Admin)
-Open PowerShell (as Administrator) and run:
+### Option 1: Git Clone / GitHub CLI (100% Portable)
+Clone the repository anywhere on Windows or WSL:
+
+```bash
+# On WSL Ubuntu
+gh repo clone teay/logitech-ghub-fix
+cd logitech-ghub-fix
+./fix-ghub.sh
+```
+
+*(Optional: Run `./install.sh` inside WSL to register the `fix-ghub` command globally in your terminal).*
+
+On Windows Command Prompt / PowerShell:
+```powershell
+git clone https://github.com/teay/logitech-ghub-fix.git
+cd logitech-ghub-fix
+.\Run-Fix.bat
+```
+
+---
+
+### Option 2: Online One-Liner (PowerShell as Admin)
+If you don't want to clone the repo, run directly from PowerShell:
 ```powershell
 irm https://raw.githubusercontent.com/teay/logitech-ghub-fix/main/Fix-LGHUB.ps1 | iex
 ```
 
-### Option 2: Double-Click Batch File
-1. Download or clone this repository.
-2. Right-click `Run-Fix.bat` and select **Run as Administrator** (or double-click it).
+---
 
-### Option 3: Manual Execution
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force
-.\Fix-LGHUB.ps1
-```
+### Option 3: Double-Click Batch Launcher
+1. Download or clone this repository anywhere on your PC.
+2. Double-click `Run-Fix.bat` (It will automatically request Administrator elevation).
 
 ---
 
@@ -54,8 +71,10 @@ Set-ExecutionPolicy Bypass -Scope Process -Force
 
 ```
 logitech-ghub-fix/
-├── Fix-LGHUB.ps1    # Main PowerShell fix script
-├── Run-Fix.bat      # Batch launcher with UAC auto-elevation
+├── Fix-LGHUB.ps1    # Portable PowerShell fix engine
+├── Run-Fix.bat      # Windows batch launcher (relative paths)
+├── fix-ghub.sh      # WSL Ubuntu portable launcher (dynamic wslpath)
+├── install.sh       # WSL setup script (~/bin/fix-ghub)
 ├── README.md        # Documentation (English & Thai)
 ├── LICENSE          # MIT License
 └── .gitignore
