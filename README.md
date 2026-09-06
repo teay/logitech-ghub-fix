@@ -20,10 +20,10 @@ Logitech G HUB frequently encounters issues where:
 
 ## 🚀 Quick Start / วิธีใช้งาน
 
-### Option 1: One-Liner (PowerShell)
+### Option 1: One-Liner (PowerShell as Admin)
 Open PowerShell (as Administrator) and run:
 ```powershell
-irm https://raw.githubusercontent.com/your-username/logitech-ghub-fix/main/Fix-LGHUB.ps1 | iex
+irm https://raw.githubusercontent.com/teay/logitech-ghub-fix/main/Fix-LGHUB.ps1 | iex
 ```
 
 ### Option 2: Double-Click Batch File
