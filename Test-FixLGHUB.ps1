@@ -109,11 +109,11 @@ Assert-Condition `
     -FailureMessage "Current user cannot write to $env:APPDATA\LGHUB (Access Denied)."
 
 # Test 5: Check Desktop Shortcut
-$desktopPath = [System.IO.Path]::Combine($env:USERPROFILE, "Desktop", "Fix-Logitech-GHUB.bat")
+$desktopPath = [System.IO.Path]::Combine($env:USERPROFILE, "Desktop", "Fix-GHUB.bat")
 Assert-Condition `
     -TestName "5. Windows Desktop Shortcut Presence" `
     -Condition { Test-Path $desktopPath } `
-    -FailureMessage "Shortcut 'Fix-Logitech-GHUB.bat' missing from Desktop."
+    -FailureMessage "Shortcut 'Fix-GHUB.bat' missing from Desktop."
 
 $summaryColor = "Green"
 if ($failed -gt 0) { $summaryColor = "Red" }
