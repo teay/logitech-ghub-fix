@@ -8,8 +8,7 @@
     2. Clears 'RunAsAdmin' compatibility flags from Windows Registry (HKCU & HKLM).
     3. Configures LGHUBUpdaterService to Automatic startup and starts the service.
     4. Resets AppData folder permissions (ACLs) for current user.
-    5. Creates Desktop shortcut 'Fix-Logitech-GHUB.bat' if missing.
-    6. Relaunches Logitech G HUB in regular user context.
+    5. Relaunches Logitech G HUB in regular user context.
 
 .EXAMPLE
     .\Fix-LGHUB.ps1
@@ -57,7 +56,7 @@ $lghubExecutables = @(
 )
 
 # 1. Terminate LG HUB Processes
-Write-Step "1/6" "Terminating running Logitech G HUB processes..."
+Write-Step "1/5" "Terminating running Logitech G HUB processes..."
 $processes = @("lghub", "lghub_agent", "lghub_updater", "lghub_system_tray")
 foreach ($proc in $processes) {
     $running = Get-Process -Name $proc -ErrorAction SilentlyContinue
@@ -69,7 +68,7 @@ foreach ($proc in $processes) {
 Write-Success "All G HUB processes stopped."
 
 # 2. Clear Registry AppCompatFlags
-Write-Step "2/6" "Cleaning 'RunAsAdmin' registry compatibility flags..."
+Write-Step "2/5" "Cleaning 'RunAsAdmin' registry compatibility flags..."
 $regPaths = @(
     "HKCU:\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers",
     "HKLM:\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers"
@@ -97,7 +96,7 @@ if ($flagsRemoved -eq 0) {
 }
 
 # 3. Configure and Start LGHUBUpdaterService
-Write-Step "3/6" "Checking LGHUBUpdaterService status..."
+Write-Step "3/5" "Checking LGHUBUpdaterService status..."
 $service = Get-Service -Name "LGHUBUpdaterService" -ErrorAction SilentlyContinue
 if ($service) {
     Write-Success "Found LGHUBUpdaterService. Ensuring StartupType is Automatic..."
@@ -113,7 +112,7 @@ if ($service) {
 }
 
 # 4. Reset AppData Permissions
-Write-Step "4/6" "Resetting user folder ACL permissions..."
+Write-Step "4/5" "Resetting user folder ACL permissions..."
 $appDataPaths = @(
     "$env:APPDATA\LGHUB",
     "$env:LOCALAPPDATA\LGHUB"
@@ -126,29 +125,8 @@ foreach ($path in $appDataPaths) {
     }
 }
 
-# 5. Ensure Desktop Shortcut Exists
-Write-Step "5/6" "Ensuring Windows Desktop shortcut exists..."
-$desktopPath = [System.IO.Path]::Combine($env:USERPROFILE, "Desktop", "Fix-Logitech-GHUB.bat")
-if (-not (Test-Path $desktopPath)) {
-    $batContent = @"
-@echo off
-title Fixing Logitech G HUB...
-net session >nul 2>&1
-if %errorLevel% NEQ 0 (
-    powershell -Command "Start-Process '%~f0' -Verb RunAs"
-    exit /b
-)
-powershell -NoProfile -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/teay/logitech-ghub-fix/main/Fix-LGHUB.ps1 | iex"
-timeout /t 3
-"@
-    Set-Content -Path $desktopPath -Value $batContent -Encoding ASCII -ErrorAction SilentlyContinue
-    Write-Success "Created 'Fix-Logitech-GHUB.bat' shortcut on Windows Desktop."
-} else {
-    Write-Success "Desktop shortcut already exists."
-}
-
-# 6. Relaunch LG HUB
-Write-Step "6/6" "Launching Logitech G HUB in standard user mode..."
+# 5. Relaunch LG HUB
+Write-Step "5/5" "Launching Logitech G HUB in standard user mode..."
 $lghubPath = Join-Path $lghubDir "lghub.exe"
 if (Test-Path $lghubPath) {
     Start-Process -FilePath $lghubPath

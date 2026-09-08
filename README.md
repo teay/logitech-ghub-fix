@@ -1,3 +1,6 @@
+นี่คือไฟล์ **README.md** ฉบับปรับปรุงแก้ไขล่าสุด (Updated Documentation) ที่อัปเดตข้อมูลโครงสร้างไฟล์ การตัดส่วนเกินออก และตรงตามพฤติกรรมของสคริปต์ใหม่ทั้งหมดครับ:
+
+```markdown
 # Logitech G HUB Admin & Startup Fix 🛠️
 
 Automated PowerShell repair tool for **Logitech G HUB** stuck on startup or requiring "Run as Administrator" privileges on Windows 10/11.
@@ -20,53 +23,52 @@ Logitech G HUB frequently encounters issues where:
 
 ## 🚀 Usage Options / วิธีใช้งาน
 
-### Option 1: Git Clone / GitHub CLI (100% Portable)
-Clone the repository anywhere on Windows or WSL:
+### Option 1: Git Clone via WSL Ubuntu (Recommended)
+Clone the repository anywhere on WSL to install and create a Windows Desktop launcher:
 
 ```bash
-# On WSL Ubuntu
 gh repo clone teay/logitech-ghub-fix
 cd logitech-ghub-fix
-./fix-ghub.sh
+
+# Install global 'fix-ghub' command & create 'Fix-GHUB.bat' on Windows Desktop
+./install.sh
+
 ```
 
-*(Optional: Run `./install.sh` inside WSL to register the `fix-ghub` command globally in your terminal).*
+After running `./install.sh`, you can either:
 
-On Windows Command Prompt / PowerShell:
-```powershell
-git clone https://github.com/teay/logitech-ghub-fix.git
-cd logitech-ghub-fix
-.\Run-Fix.bat
-```
+* **On Windows:** Double-click `Fix-GHUB.bat` created on your Desktop.
+* **On WSL:** Run `fix-ghub` or `./fix-ghub.sh` from anywhere in your terminal.
 
 ---
 
 ### Option 2: Online One-Liner (PowerShell as Admin)
+
 If you don't want to clone the repo, run directly from PowerShell:
+
 ```powershell
-irm https://raw.githubusercontent.com/teay/logitech-ghub-fix/main/Fix-LGHUB.ps1 | iex
+irm [https://raw.githubusercontent.com/teay/logitech-ghub-fix/main/Fix-LGHUB.ps1](https://raw.githubusercontent.com/teay/logitech-ghub-fix/main/Fix-LGHUB.ps1) | iex
+
 ```
-
----
-
-### Option 3: Double-Click Batch Launcher
-1. Download or clone this repository anywhere on your PC.
-2. Double-click `Run-Fix.bat` (It will automatically request Administrator elevation).
 
 ---
 
 ## 🧪 Automated Testing / การรันชุดทดสอบ
 
-You can verify that all 5 repair conditions are satisfied by running the test suite:
+You can verify that all repair conditions are satisfied by running the test suite:
 
 **On WSL Ubuntu:**
+
 ```bash
 ./test.sh
+
 ```
 
 **On Windows PowerShell:**
+
 ```powershell
 .\Test-FixLGHUB.ps1
+
 ```
 
 ---
@@ -74,13 +76,12 @@ You can verify that all 5 repair conditions are satisfied by running the test su
 ## ⚙️ What the Fix Script Does / สคริปต์แก้ไขอะไรบ้าง
 
 | Step | Action | Description |
-|---|---|---|
+| --- | --- | --- |
 | 1 | **Kill LG HUB Processes** | Stops `lghub.exe`, `lghub_agent.exe`, `lghub_updater.exe`, `lghub_system_tray.exe` |
 | 2 | **Clear AppCompatFlags** | Removes `RUNASADMIN` registry keys from `HKCU` and `HKLM` |
 | 3 | **Enable Service** | Configures `LGHUBUpdaterService` startup type to `Automatic` and starts it |
 | 4 | **Reset Permissions** | Grants `FullControl` to current user on `%AppData%\LGHUB` and `%LocalAppData%\LGHUB` |
-| 5 | **Ensure Shortcut** | Creates `Fix-Logitech-GHUB.bat` on Windows Desktop if missing |
-| 6 | **Relaunch G HUB** | Starts `lghub.exe` in normal user security context |
+| 5 | **Relaunch G HUB** | Starts `lghub.exe` in normal user security context |
 
 ---
 
@@ -88,18 +89,19 @@ You can verify that all 5 repair conditions are satisfied by running the test su
 
 ```
 logitech-ghub-fix/
-├── Fix-LGHUB.ps1    # Portable PowerShell fix engine
-├── Test-FixLGHUB.ps1# Automated verification test suite
-├── Run-Fix.bat      # Windows batch launcher (relative paths)
-├── fix-ghub.sh      # WSL Ubuntu portable launcher (dynamic wslpath)
-├── test.sh          # WSL test runner
-├── install.sh       # WSL setup script (~/bin/fix-ghub)
-├── README.md        # Documentation (English & Thai)
-├── LICENSE          # MIT License
-└── .gitignore
+├── Fix-LGHUB.ps1     # Portable PowerShell fix engine
+├── Test-FixLGHUB.ps1 # Automated verification test suite
+├── fix-ghub.sh       # WSL Ubuntu launcher
+├── test.sh           # WSL test runner
+├── install.sh        # WSL setup script (creates Windows Desktop launcher)
+└── README.md         # Documentation
+
 ```
 
 ---
 
 ## 📄 License
-This project is licensed under the [MIT License](LICENSE).
+
+This project is licensed under the [MIT License](https://www.google.com/search?q=LICENSE).
+
+```
